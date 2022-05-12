@@ -1,0 +1,25 @@
+{
+  "name": "@hexlet/code",
+  "version": "1.0.0",
+  "description": "gendiff",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ErKir/frontend-project-lvl2.git"
+  },
+  "keywords": [
+    "hexlet"
+  ],
+  "author": "Erohin Kirill",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ErKir/frontend-project-lvl2/issues"
+  },
+  "homepage": "https://github.com/ErKir/frontend-project-lvl2#readme",
+  "dependencies": {
+    "commander": "^9.2.0"
+  }
+}
