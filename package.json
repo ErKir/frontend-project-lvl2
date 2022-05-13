@@ -3,6 +3,11 @@
   "version": "1.0.0",
   "description": "gendiff",
   "main": "index.js",
+  "type": "module",
+  "bin": {
+    "gendiff": "./gendiff.js"
+
+  },
   "scripts": {
     "test": "test"
   },
@@ -21,5 +26,12 @@
   "homepage": "https://github.com/ErKir/frontend-project-lvl2#readme",
   "dependencies": {
     "commander": "^9.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.13.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-react": "^7.29.4",
+    "prettier": "2.6.2"
   }
 }
