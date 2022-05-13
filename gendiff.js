@@ -13,11 +13,8 @@ program
   .description('Compares two configuration files and shows a difference.')
   .version('1.0.0');
 
-// program.command()
-//   .option('-V, --version', 'output the version number')
-//   .action((str, options) => {
-//     const limit = options.first ? 1 : undefined;
-//     console.log(str.split(options.separator, limit));
-//   });
+program
+  .option('-f, --format <type>', 'output format')
+  .argument('<type>', 'output format');
 
 program.parse();
