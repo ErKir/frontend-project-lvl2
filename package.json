@@ -6,7 +6,6 @@
   "type": "module",
   "bin": {
     "gendiff": "./gendiff.js"
-
   },
   "scripts": {
     "test": "test"
@@ -25,7 +24,8 @@
   },
   "homepage": "https://github.com/ErKir/frontend-project-lvl2#readme",
   "dependencies": {
-    "commander": "^9.2.0"
+    "commander": "^9.2.0",
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "eslint": "^8.13.0",
