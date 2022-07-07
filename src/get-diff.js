@@ -7,8 +7,6 @@ const getExtension = (filePath) => filePath.split('.').pop();
 
 const parseFileAsString = (filePath) => fs.readFileSync(filePath, 'utf8');
 
-// const iteratees =
-
 const getDiff = (filePath1, filePath2) => {
   // console.log(`Current directory: ${process.cwd()}`);
 
@@ -18,7 +16,6 @@ const getDiff = (filePath1, filePath2) => {
   const file1AsString = parseFileAsString(path1);
   console.log(file1AsString);
   const file1AsObject = extension === 'json' ? JSON.parse(file1AsString) : file1AsString;
-  // const sortedFile1 = _.sortBy([file1AsObject], iteratees);
 
   // prepare file2
   const path2 = path.resolve(filePath2);
@@ -29,12 +26,23 @@ const getDiff = (filePath1, filePath2) => {
   // main work
   const generic = (obj1, obj2) => {
     const arr = [...Object.entries(obj1), ...Object.entries(obj2)];
-    const sortedArr = _.sortBy(arr, [([key]) => key]);
-    const resultArr = sortedArr.reduce((acc, pair) => {
+    const sortedArr = _.sortBy(arr);
+    const filtered = sortedArr.reduce((acc, item) => {
+      const [key] = item;
+      if (acc.find(([accKey]) => key === accKey)) {
+        return acc;
+      }
+      const newAcc = [...acc, item];
+      return newAcc;
+    }, []);
+    console.log(`filtered = ${filtered.toString()}`);
+
+    const resultArr = filtered.reduce((acc, pair) => {
       const [key, value] = pair;
       if (Object.hasOwn(obj1, key) && Object.hasOwn(obj2, key)) {
         if (obj1[key] === obj2[key]) {
-          const newAcc = [...acc, [key, value]];
+          const newKey = `  ${key}`;
+          const newAcc = [...acc, [newKey, value]];
           return newAcc;
         }
         const key1 = `- ${key}`;
@@ -63,13 +71,21 @@ const getDiff = (filePath1, filePath2) => {
     return resultArr;
   };
   const diff = generic(file1AsObject, file2AsObject);
+  console.log(`diff = ${diff.toString()}`);
+  const diffToString = diff.reduce((string, [key, value], currentIndex) => {
+    if (currentIndex === 0) {
+      const resultString = string.concat(`{\n${key}: ${value}`);
+      return resultString;
+    }
+    if (currentIndex === diff.length - 1) {
+      const resultString = string.concat(`,\n${key}: ${value}\n}`);
+      return resultString;
+    }
+    const resultString = string.concat(`,\n${key}: ${value}`);
+    return resultString;
+  }, '');
   const resultJSON = JSON.stringify(Object.fromEntries(diff));
-  const JSONAsString = JSON.parse(resultJSON, (k, v) => {
-    const str = '';
-
-
-  })
-  console.log(JSONAsString);
+  console.log(diffToString);
   return resultJSON;
 };
 
