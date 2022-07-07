@@ -44,3 +44,5 @@ program
   .action((filepath1, filepath2) => getDiff(filepath1, filepath2));
 
 program.parse();
+
+export default getDiff;
