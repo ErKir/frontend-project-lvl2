@@ -8,7 +8,11 @@
     "gendiff": "./main.js"
   },
   "scripts": {
-    "test": "jest"
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest"
+  },
+  "jest": {
+  "testEnvironment": "node",
+  "transform": {}
   },
   "repository": {
     "type": "git",
@@ -28,11 +32,13 @@
     "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "eslint": "^8.13.0",
+    "eslint": "^8.19.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jest": "^26.5.3",
     "eslint-plugin-react": "^7.29.4",
     "jest": "^28.1.2",
+    "jest-cli": "^28.1.2",
     "prettier": "2.6.2"
   }
 }

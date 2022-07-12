@@ -64,6 +64,7 @@ const genDiff = (obj1, obj2) => {
   }, '');
   const resultJSON = JSON.stringify(Object.fromEntries(diff));
   console.log(diffToString);
+  // console.log('resultJSON=', resultJSON);
   return resultJSON;
 };
 
