@@ -11,8 +11,8 @@
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest"
   },
   "jest": {
-  "testEnvironment": "node",
-  "transform": {}
+    "testEnvironment": "node",
+    "transform": {}
   },
   "repository": {
     "type": "git",
@@ -29,6 +29,7 @@
   "homepage": "https://github.com/ErKir/frontend-project-lvl2#readme",
   "dependencies": {
     "commander": "^9.2.0",
+    "js-yaml": "^4.1.0",
     "lodash": "^4.17.21"
   },
   "devDependencies": {

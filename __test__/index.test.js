@@ -8,6 +8,7 @@ import {
 import {
   readFileSync,
 } from 'fs';
+// import yaml from 'js-yaml';
 import getDiff from '../bin/getDiff.js';
 
 const __filename = fileURLToPath(
@@ -29,7 +30,7 @@ test('result must be equal "result.json"', () => {
 test('result must be equal "resultYML.yml"', () => {
   const actual1 = getDiff(getFixturePath('file1.yml'), getFixturePath('file2.yaml'));
   const expected1 = readFile('resultYML.yml').trim();
-  console.log('exp==', expected1);
-  console.log('act==', actual1);
+  // console.log('exp==', expected1);
+  // console.log('act==', actual1);
   expect(actual1).toEqual(expected1);
 });
