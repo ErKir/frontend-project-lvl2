@@ -24,17 +24,43 @@ const diffToString = (diff, format) => {
     };
     return resultObject;
   }, {});
-
+  const resultJSON = JSON.stringify(diffObject);
   // chose output format of data and return result diff
   if (format === 'json') {
-    const resultJSON = JSON.stringify(diffObject);
     console.log(resultJSON);
-    return resultJSON;
+  } else {
+    const resultYAML = yaml.dump(diffObject);
+    console.log(resultYAML);
   }
-  const resultYAML = yaml.dump(diffObject);
-  console.log(resultYAML);
-  // console.log('resultYAML=', resultYAML);
-  return resultYAML;
+  return resultJSON;
 };
 
 export default diffToString;
+
+// // build JSON string
+// const buildStringJSON = diff.reduce((string, [key, value, event], currentIndex) => {
+//   const eventAsString = getEventAsString(event);
+//   if (currentIndex === 0) {
+//     const resultString = string.concat(`{${eventAsString}${key}: ${value},\n`);
+//     return resultString;
+//   }
+//   if (currentIndex === diff.length - 1) {
+//     const resultString = string.concat(`${eventAsString}${key}: ${value}\n}`);
+//     return resultString;
+//   }
+//   const resultString = string.concat(`${eventAsString}${key}: ${value},\n`);
+//   return resultString;
+// }, '');
+// // build YAML string
+// const bieldStringYAML = diff.reduce((string, [key, value, event], currentIndex) => {
+//   if (currentIndex === 0) {
+//     const resultString = string.concat(`'${eventAsString}${key}': ${value}`);
+//     return resultString;
+//   }
+//   if (currentIndex === diff.length - 1) {
+//     const resultString = string.concat(`\n'${eventAsString}${key}': ${value}`);
+//     return resultString;
+//   }
+//   const resultString = string.concat(`\n'${eventAsString}${key}': ${value}`);
+//   return resultString;
+// }, '');

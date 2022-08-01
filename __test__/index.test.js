@@ -28,9 +28,9 @@ test('result must be equal "result.json"', () => {
 });
 
 test('result must be equal "resultYML.yml"', () => {
-  const actual1 = getDiff(getFixturePath('file1.yml'), getFixturePath('file2.yaml'));
-  const expected1 = readFile('resultYML.yml');
+  const actual = getDiff(getFixturePath('file1.yml'), getFixturePath('file2.yaml'));
+  const expected = readFile('result.json').trim();
   // console.log('exp==', expected1);
   // console.log('act==', actual1);
-  expect(actual1).toEqual(expected1);
+  expect(actual).toEqual(expected);
 });
