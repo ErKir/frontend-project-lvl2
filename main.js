@@ -1,12 +1,13 @@
 #!/usr/bin/env node
 
+/* eslint-disable no-console */
+
 import {
   Command,
 } from 'commander';
 import getDiff from './bin/getDiff.js';
 
 const program = new Command();
-console.log(`Current directory: ${process.cwd()}`);
 program
   .name('gendiff')
   .description('Compares two configuration files and shows a difference.')
