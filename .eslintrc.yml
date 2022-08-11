@@ -13,6 +13,6 @@ plugins:
   - react
   - jest
 rules:
-  no-console: 0
+  no-console: 1
   import/extensions: 0
   no-underscore-dangle: [2, { "allow": ["__filename", "__dirname"] }]
