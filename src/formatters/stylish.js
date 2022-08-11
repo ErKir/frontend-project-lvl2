@@ -1,7 +1,6 @@
 import _ from 'lodash';
 
 const getEventAsString = (event) => {
-  console.log(`event - ${event}`);
   switch (event) {
     case 'added':
       return '+ ';
@@ -14,54 +13,62 @@ const getEventAsString = (event) => {
   }
 };
 
-const toString = (diff) => {
-  const replacer = ' ';
-  const spaceCount = 1;
-  const stringConstructor = (item, currentResult, depth = 1) => {
-    const multiplyReplacer = replacer.repeat(spaceCount * depth);
-    if (_.isObject(item)) {
-      const deeper = depth + 1;
-      const keys = Object.keys(item);
-      console.log(`keys = ${keys}`);
-      const mapped = keys.reduce((str, key) => {
-        const eventString = getEventAsString(item.event);
-        const newString = str.concat(`${multiplyReplacer}${eventString}${key}: ${stringConstructor(item[key], '', deeper)}\n`);
-        return newString;
-      }, '');
-      const closedReplacer = replacer.repeat(spaceCount * (depth - 1));
-      const newCurrentResult = `{\n${mapped}${closedReplacer}}`;
-      return currentResult.concat(newCurrentResult);
+const stringify = (value, replacer = ' ', spacesCount = 2, level = 1) => {
+  const iter = (currentValue, depth) => {
+    if (!_.isObject(currentValue)) {
+      return `${currentValue}`;
     }
-    return currentResult.concat(String(item));
-  };
-  return stringConstructor(diff, '');
-};
-export default toString;
 
-// // build JSON string
-// const buildStringJSON = diff.reduce((string, [key, value, event], currentIndex) => {
-//   const eventAsString = getEventAsString(event);
-//   if (currentIndex === 0) {
-//     const resultString = string.concat(`{${eventAsString}${key}: ${value},\n`);
-//     return resultString;
-//   }
-//   if (currentIndex === diff.length - 1) {
-//     const resultString = string.concat(`${eventAsString}${key}: ${value}\n}`);
-//     return resultString;
-//   }
-//   const resultString = string.concat(`${eventAsString}${key}: ${value},\n`);
-//   return resultString;
-// }, '');
-// // build YAML string
-// const bieldStringYAML = diff.reduce((string, [key, value, event], currentIndex) => {
-//   if (currentIndex === 0) {
-//     const resultString = string.concat(`'${eventAsString}${key}': ${value}`);
-//     return resultString;
-//   }
-//   if (currentIndex === diff.length - 1) {
-//     const resultString = string.concat(`\n'${eventAsString}${key}': ${value}`);
-//     return resultString;
-//   }
-//   const resultString = string.concat(`\n'${eventAsString}${key}': ${value}`);
-//   return resultString;
-// }, '');
+    const indentSize = depth * spacesCount;
+    const currentIndent = replacer.repeat(indentSize);
+    const bracketIndent = replacer.repeat(indentSize - (spacesCount * 2));
+    const lines = Object
+      .entries(currentValue)
+      .map(([key, val]) => `${currentIndent}${key}: ${iter(val, depth + 2)}`);
+
+    return [
+      '{',
+      ...lines,
+      `${bracketIndent}}`,
+    ].join('\n');
+  };
+
+  return iter(value, level);
+};
+
+const stylish = (item, replacer = ' ', spacesCount = 2) => {
+  // console.log(`obj->${JSON.stringify(item)}`);
+  const iter = (currentItem, depth) => {
+    if (!_.isObject(currentItem)) {
+      return `${currentItem}`;
+    }
+
+    const indentSize = depth * spacesCount;
+    const currentIndent = replacer.repeat(indentSize);
+    // console.log(`spaces = ${currentIndent.length}`);
+    const bracketIndent = replacer.repeat(indentSize - spacesCount);
+
+    if (!Array.isArray(currentItem)) {
+      return stringify(currentItem, replacer, spacesCount, depth + 1);
+    }
+    const lines = currentItem.map((obj) => {
+      const {
+        name,
+        value,
+        event,
+      } = obj;
+      // console.log(name, value, event);
+      return `${currentIndent}${getEventAsString(event)}${name}: ${iter(value, depth + 2)}`;
+    });
+
+    return [
+      '{',
+      ...lines,
+      `${bracketIndent}}`,
+    ].join('\n');
+  };
+
+  return iter(item, 1);
+};
+
+export default stylish;

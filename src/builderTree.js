@@ -2,7 +2,7 @@ import _ from 'lodash';
 
 // object to array
 const toArray = (obj) => Object.entries(obj);
-// isObject?
+// isObject not array?
 const isObject = (obj) => Object.prototype.toString.call(obj) === '[object Object]';
 
 const getUniqKeys = (arr) => {
@@ -26,42 +26,48 @@ const builder = (obj1, obj2) => {
   const arrayUniqKeys = getUniqKeys(sortedArr);
   // building diff as array with next data {key, value, event},
   // event(deleted || added || unchanged)
-  const diff = arrayUniqKeys.map(([key, value]) => {
+  const diff = arrayUniqKeys.reduce((acc, [key, value]) => {
     if (_.has(obj1, key) && _.has(obj2, key)) {
       if (isObject(obj1[key]) && isObject(obj2[key])) {
-        return {
+        return [...acc, {
           name: key,
           value: builder(obj1[key], obj2[key]),
           event: 'unchanged',
-        };
+        }];
       }
       if (obj1[key] === obj2[key]) {
-        return {
+        return [...acc, {
           name: key,
           value,
           event: 'unchanged',
-        };
+        }];
       }
-      return {
-        name: key,
-        value1: obj1[key],
-        value2: obj2[key],
-        type: 'changed',
-      };
+      return [...acc,
+        {
+          name: key,
+          value: obj1[key],
+          event: 'deleted',
+        },
+        {
+          name: key,
+          value: obj2[key],
+          event: 'added',
+        },
+      ];
     }
     if (!_.has(obj2, key)) {
-      return {
+      return [...acc, {
         name: key,
         value: obj1[key],
         event: 'deleted',
-      };
+      }];
     }
-    return {
+    return [...acc, {
       name: key,
       value: obj2[key],
       event: 'added',
-    };
-  });
+    }];
+  }, []);
   return diff;
 };
 
