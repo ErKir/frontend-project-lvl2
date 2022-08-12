@@ -4,12 +4,12 @@ const getEventAsString = (event) => {
   switch (event) {
     case 'added':
       return '+ ';
-    case 'deleted':
+    case 'removed':
       return '- ';
     case 'unchanged':
       return '  ';
     default:
-      throw Error('getEventAsString error');
+      throw new Error(`Unexpected "obj.event" = ${event}`);
   }
 };
 
@@ -37,7 +37,6 @@ const stringify = (value, replacer = ' ', spacesCount = 2, level = 1) => {
 };
 
 const stylish = (item, replacer = ' ', spacesCount = 2) => {
-  // console.log(`obj->${JSON.stringify(item)}`);
   const iter = (currentItem, depth) => {
     if (!_.isObject(currentItem)) {
       return `${currentItem}`;
@@ -45,19 +44,20 @@ const stylish = (item, replacer = ' ', spacesCount = 2) => {
 
     const indentSize = depth * spacesCount;
     const currentIndent = replacer.repeat(indentSize);
-    // console.log(`spaces = ${currentIndent.length}`);
     const bracketIndent = replacer.repeat(indentSize - spacesCount);
 
     if (!Array.isArray(currentItem)) {
       return stringify(currentItem, replacer, spacesCount, depth + 1);
     }
     const lines = currentItem.map((obj) => {
+      if (obj.event === 'updated') {
+        return `${currentIndent}${getEventAsString('removed')}${obj.name}: ${iter(obj.value1, depth + 2)}\n${currentIndent}${getEventAsString('added')}${obj.name}: ${iter(obj.value2, depth)}`;
+      }
       const {
         name,
         value,
         event,
       } = obj;
-      // console.log(name, value, event);
       return `${currentIndent}${getEventAsString(event)}${name}: ${iter(value, depth + 2)}`;
     });
 

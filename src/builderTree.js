@@ -25,7 +25,7 @@ const builder = (obj1, obj2) => {
   // remove duplicate keys
   const arrayUniqKeys = getUniqKeys(sortedArr);
   // building diff as array with next data {key, value, event},
-  // event(deleted || added || unchanged)
+  // event(deleted || added || unchanged || updated)
   const diff = arrayUniqKeys.reduce((acc, [key, value]) => {
     if (_.has(obj1, key) && _.has(obj2, key)) {
       if (isObject(obj1[key]) && isObject(obj2[key])) {
@@ -45,13 +45,9 @@ const builder = (obj1, obj2) => {
       return [...acc,
         {
           name: key,
-          value: obj1[key],
-          event: 'deleted',
-        },
-        {
-          name: key,
-          value: obj2[key],
-          event: 'added',
+          value1: obj1[key],
+          value2: obj2[key],
+          event: 'updated',
         },
       ];
     }
@@ -59,7 +55,7 @@ const builder = (obj1, obj2) => {
       return [...acc, {
         name: key,
         value: obj1[key],
-        event: 'deleted',
+        event: 'removed',
       }];
     }
     return [...acc, {
