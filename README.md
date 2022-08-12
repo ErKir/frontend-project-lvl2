@@ -21,3 +21,7 @@ Clone the repository and use `make install` command. Thereafter use `npm link`.
 ### Example of working with "plain" formatter for JSON or YAML files
 
 [![asciicast](https://asciinema.org/a/514390.svg)](https://asciinema.org/a/514390)
+
+### Example of working with "json" formatter for JSON or YAML files
+
+[![asciicast](https://asciinema.org/a/514471.svg)](https://asciinema.org/a/514471)
