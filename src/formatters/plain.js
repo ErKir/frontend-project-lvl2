@@ -1,14 +1,51 @@
-// Property 'common.follow' was added with value: false
-// Property 'common.setting2' was removed
-// Property 'common.setting3' was updated. From true to null
-// Property 'common.setting4' was added with value: 'blah blah'
-// Property 'common.setting5' was added with value: [complex value]
-// Property 'common.setting6.doge.wow' was updated. From '' to 'so much'
-// Property 'common.setting6.ops' was added with value: 'vops'
-// Property 'group1.baz' was updated. From 'bas' to 'bars'
-// Property 'group1.nest' was updated. From [complex value] to 'str'
-// Property 'group2' was removed
-// Property 'group3' was added with value: [complex value]
+import _ from 'lodash';
 
+const stringify = (value) => {
+  if (_.isString(value) || _.isNumber(value)) {
+    return `'${value}'`;
+  }
+  if (!_.isObject(value)) {
+    return `${value}`;
+  }
+  return '[complex value]';
+};
 
-// изза того что есть состояние updated, скорее всего нужно переписать билдер и форматер заново!!!
+const plain = (item) => {
+  const iter = (currentItem, propNames) => {
+    const lines = currentItem.map((obj) => {
+      const {
+        name,
+        value,
+        event,
+      } = obj;
+      const currentPropName = [...propNames, name];
+      if (Array.isArray(value)) {
+        return iter(value, currentPropName);
+      }
+      let line;
+      switch (obj.event) {
+        case 'added':
+          line = `Property '${currentPropName.join('.')}' was ${event} with value: ${stringify(value)}`;
+          break;
+        case 'removed':
+          line = `Property '${currentPropName.join('.')}' was ${event}`;
+          break;
+        case 'updated':
+          line = `Property '${currentPropName.join('.')}' was ${event}. From ${stringify(obj.value1)} to ${stringify(obj.value2)}`;
+          break;
+        case 'unchanged':
+          line = '';
+          break;
+        default:
+          throw new Error(`Unexpected "obj.event" = ${event}`);
+      }
+      return line;
+    });
+
+    return lines.filter((str) => str !== '').join('\n');
+  };
+
+  return iter(item, []);
+};
+
+export default plain;
