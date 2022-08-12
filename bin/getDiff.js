@@ -4,7 +4,7 @@ import {
 } from 'path';
 import fs from 'node:fs';
 import parser from '../src/parsers.js';
-import diffToString from '../src/diffToString.js';
+import diffToString from '../src/formatters/index.js';
 import builder from '../src/builderTree.js';
 
 const getFixturePath = (filepath) => resolve(process.cwd(), filepath);
