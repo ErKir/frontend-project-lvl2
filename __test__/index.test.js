@@ -18,7 +18,7 @@ const __dirname = dirname(__filename);
 const getFixturePath = (filename) => resolve(__dirname, '..', '__fixtures__', filename);
 const readFile = (filename) => readFileSync(getFixturePath(filename), 'utf-8');
 
-const formats = ['stylish', 'plain'];
+const formats = ['stylish', 'plain', 'json'];
 
 test.each(formats)('JSON file test with %s output format', (format) => {
   const actual = getDiff(getFixturePath('file1.json'), getFixturePath('file2.json'), format);
