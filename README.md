@@ -17,3 +17,7 @@ Clone the repository and use `make install` command. Thereafter use `npm link`.
 ### Example of working with nested structures JSON or YAML files
 
 [![asciicast](https://asciinema.org/a/514228.svg)](https://asciinema.org/a/514228)
+
+### Example of working with "plain" formatter for JSON or YAML files
+
+[![asciicast](https://asciinema.org/a/514390.svg)](https://asciinema.org/a/514390)
