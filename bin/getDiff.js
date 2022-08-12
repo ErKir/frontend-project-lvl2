@@ -14,7 +14,7 @@ const parseFileAsString = (filePath) => fs.readFileSync(getFixturePath(filePath)
 // get extension for parser
 const getExtension = (filePath) => filePath.split('.').pop().toLowerCase();
 
-const getDiff = (filePath1, filePath2, outputFormat = 'stylish') => {
+const getDiff = (filePath1, filePath2, outputFormat) => {
   // prepare file1
   const file1AsString = parseFileAsString(filePath1);
 
