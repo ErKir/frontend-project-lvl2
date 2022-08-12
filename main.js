@@ -20,7 +20,4 @@ program
   .action((filepath1, filepath2) => console.log(
     getDiff(filepath1, filepath2, program.opts().format),
   ));
-// .parse(process.argv);
 program.parse();
-
-// консолить нужно от сюда, что бы в библиотеке небыло консолей
