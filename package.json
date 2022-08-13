@@ -2,10 +2,10 @@
   "name": "@hexlet/code",
   "version": "1.0.0",
   "description": "gendiff",
-  "main": "index.js",
+  "main": "i./src/getDiff.js",
   "type": "module",
   "bin": {
-    "gendiff": "./main.js"
+    "gendiff": "./bin/main.js"
   },
   "scripts": {
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest"
