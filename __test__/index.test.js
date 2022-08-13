@@ -8,7 +8,7 @@ import {
 import {
   readFileSync,
 } from 'fs';
-import getDiff from '../bin/getDiff.js';
+import getDiff from '../src/getDiff.js';
 
 const __filename = fileURLToPath(
   import.meta.url,
