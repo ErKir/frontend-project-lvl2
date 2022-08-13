@@ -5,7 +5,7 @@
 import {
   Command,
 } from 'commander';
-import getDiff from './bin/getDiff.js';
+import getDiff from '../src/getDiff.js';
 
 const program = new Command();
 program

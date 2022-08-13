@@ -3,9 +3,9 @@ import {
   resolve,
 } from 'path';
 import fs from 'node:fs';
-import parser from '../src/parsers.js';
-import diffToString from '../src/formatters/index.js';
-import builder from '../src/builderTree.js';
+import parser from './parsers.js';
+import diffToString from './formatters/index.js';
+import buildDiff from './builderTree.js';
 
 const getFixturePath = (filepath) => resolve(process.cwd(), filepath);
 
@@ -26,7 +26,8 @@ const getDiff = (filePath1, filePath2, outputFormat) => {
   const file1AsObject = parser(file1AsString, extension1);
   const file2AsObject = parser(file2AsString, extension2);
   // constructing a string that depends on the data format (json or yaml)
-  return diffToString(builder(file1AsObject, file2AsObject), outputFormat);
+  const diff = buildDiff(file1AsObject, file2AsObject);
+  return diffToString(diff, outputFormat);
 };
 
 export default getDiff;
