@@ -1,18 +1,9 @@
-import {
-  fileURLToPath,
-} from 'url';
-import {
-  dirname,
-  resolve,
-} from 'path';
-import {
-  readFileSync,
-} from 'fs';
+import { fileURLToPath } from 'url';
+import { dirname, resolve } from 'path';
+import { readFileSync } from 'fs';
 import getDiff from '../src/getDiff.js';
 
-const __filename = fileURLToPath(
-  import.meta.url,
-);
+const __filename = fileURLToPath( import.meta.url );
 const __dirname = dirname(__filename);
 
 const getFixturePath = (filename) => resolve(__dirname, '..', '__fixtures__', filename);
