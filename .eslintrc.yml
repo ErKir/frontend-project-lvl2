@@ -6,21 +6,20 @@ env:
 extends:
   - airbnb-base
   - "plugin:jest/recommended"
-  #- "plugin:fp/recommended"
+  - "plugin:fp/recommended"
 parserOptions:
   ecmaVersion: latest
   sourceType: module
 plugins:
-  #- fp
+  - fp
   - jest
 rules:
-  no-console: 1
+  no-console: 0
   import/extensions: 0
   no-underscore-dangle: [2, { "allow": ["__filename", "__dirname"] }]
-#  fp/no-nil: 0
-#  fp/no-unused-expression: 0
-#  fp/no-throw: 0
-#  fp/no-mutating-methods:
-#    - error
-#    - allowedObjects:
-#    - "_"
+  fp/no-nil: 0
+  fp/no-unused-expression: 0
+  fp/no-throw: 0
+  fp/no-mutating-methods:
+    - error
+    - allowedObjects: ["_"]

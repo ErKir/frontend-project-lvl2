@@ -1,6 +1,7 @@
 import process from 'process';
 import { resolve } from 'path';
 import fs from 'node:fs';
+import _ from 'lodash';
 import parser from './parsers.js';
 import diffToString from './formatters/index.js';
 import buildDiff from './builderTree.js';
@@ -10,7 +11,7 @@ const getFixturePath = (filepath) => resolve(process.cwd(), filepath);
 const parseFileAsString = (filePath) => fs.readFileSync(getFixturePath(filePath), 'utf8');
 
 // get extension for parser
-const getExtension = (filePath) => filePath.split('.').pop().toLowerCase();
+const getExtension = (filePath) => _.last(filePath.split('.')).toLowerCase();
 
 const getDiff = (filePath1, filePath2, outputFormat = 'stylish') => {
   // prepare file1
