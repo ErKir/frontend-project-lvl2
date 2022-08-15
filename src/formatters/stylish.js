@@ -44,7 +44,7 @@ const stylish = (item, replacer = ' ', spacesCount = 2) => {
     }
     const lines = currentItem.map((obj) => {
       if (obj.event === 'updated') {
-        return `${currentIndent}${getEventAsString('removed')}${obj.name}: ${iter(obj.value1, depth + 2)}\n${currentIndent}${getEventAsString('added')}${obj.name}: ${iter(obj.value2, depth)}`;
+        return `${currentIndent}${getEventAsString('removed')}${obj.name}: ${iter(obj.value1, depth + 2)}\n${currentIndent}${getEventAsString('added')}${obj.name}: ${iter(obj.value2, depth + 2)}`;
       }
       const { name, value, event } = obj;
       return `${currentIndent}${getEventAsString(event)}${name}: ${iter(value, depth + 2)}`;

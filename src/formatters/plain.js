@@ -1,7 +1,10 @@
 import _ from 'lodash';
 
 const stringify = (value) => {
-  if (_.isString(value) || _.isNumber(value)) {
+  if (_.isNumber(value)) {
+    return value;
+  }
+  if (_.isString(value)) {
     return `'${value}'`;
   }
   if (!_.isObject(value)) {
@@ -13,11 +16,7 @@ const stringify = (value) => {
 const plain = (item) => {
   const iter = (currentItem, propNames) => {
     const lines = currentItem.map((obj) => {
-      const {
-        name,
-        value,
-        event,
-      } = obj;
+      const { name, value, event } = obj;
       const currentPropName = [...propNames, name];
       if (Array.isArray(value)) {
         return iter(value, currentPropName);
