@@ -1,7 +1,5 @@
 import process from 'process';
-import {
-  resolve,
-} from 'path';
+import { resolve } from 'path';
 import fs from 'node:fs';
 import parser from './parsers.js';
 import diffToString from './formatters/index.js';

@@ -18,21 +18,14 @@ const stringify = (value, replacer = ' ', spacesCount = 2, level = 1) => {
     if (!_.isObject(currentValue)) {
       return `${currentValue}`;
     }
-
     const indentSize = depth * spacesCount;
     const currentIndent = replacer.repeat(indentSize);
     const bracketIndent = replacer.repeat(indentSize - (spacesCount * 2));
     const lines = Object
       .entries(currentValue)
       .map(([key, val]) => `${currentIndent}${key}: ${iter(val, depth + 2)}`);
-
-    return [
-      '{',
-      ...lines,
-      `${bracketIndent}}`,
-    ].join('\n');
+    return ['{', ...lines, `${bracketIndent}}`].join('\n');
   };
-
   return iter(value, level);
 };
 
@@ -53,21 +46,11 @@ const stylish = (item, replacer = ' ', spacesCount = 2) => {
       if (obj.event === 'updated') {
         return `${currentIndent}${getEventAsString('removed')}${obj.name}: ${iter(obj.value1, depth + 2)}\n${currentIndent}${getEventAsString('added')}${obj.name}: ${iter(obj.value2, depth)}`;
       }
-      const {
-        name,
-        value,
-        event,
-      } = obj;
+      const { name, value, event } = obj;
       return `${currentIndent}${getEventAsString(event)}${name}: ${iter(value, depth + 2)}`;
     });
-
-    return [
-      '{',
-      ...lines,
-      `${bracketIndent}}`,
-    ].join('\n');
+    return ['{', ...lines, `${bracketIndent}}`].join('\n');
   };
-
   return iter(item, 1);
 };
 

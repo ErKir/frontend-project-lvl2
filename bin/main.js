@@ -2,9 +2,7 @@
 
 /* eslint-disable no-console */
 
-import {
-  Command,
-} from 'commander';
+import { Command } from 'commander';
 import getDiff from '../src/getDiff.js';
 
 const program = new Command();

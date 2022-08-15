@@ -13,11 +13,7 @@ const stringify = (value) => {
 const plain = (item) => {
   const iter = (currentItem, propNames) => {
     const lines = currentItem.map((obj) => {
-      const {
-        name,
-        value,
-        event,
-      } = obj;
+      const { name, value, event } = obj;
       const currentPropName = [...propNames, name];
       if (Array.isArray(value)) {
         return iter(value, currentPropName);
