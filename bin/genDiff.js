@@ -3,7 +3,7 @@
 /* eslint-disable no-console */
 
 import { Command } from 'commander';
-import getDiff from '../src/getDiff.js';
+import genDiff from '../src/index.js';
 
 const program = new Command();
 program
@@ -16,6 +16,6 @@ program
   .argument('<filepath_1>')
   .argument('<filepath_2>')
   .action((filepath1, filepath2) => console.log(
-    getDiff(filepath1, filepath2, program.opts().format),
+    genDiff(filepath1, filepath2, program.opts().format),
   ));
 program.parse();

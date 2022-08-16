@@ -1,32 +1,15 @@
 import _ from 'lodash';
 
-// object to array
-const toArray = (obj) => Object.entries(obj);
-// isObject not array?
+// array You Shall Not Pass!!!
 const isObject = (obj) => Object.prototype.toString.call(obj) === '[object Object]';
 
-const getUniqKeys = (arr) => {
-  const uniq = arr.reduce((acc, item) => {
-    const [key] = item;
-    if (acc.find(([accKey]) => key === accKey)) {
-      return acc;
-    }
-    const newAcc = [...acc, item];
-    return newAcc;
-  }, []);
-  return uniq;
-};
-
 const builder = (obj1, obj2) => {
-  // concatenation of objects into one array
-  const arr = [...toArray(obj1), ...toArray(obj2)];
-  // sort the keys in the array so that the same keys are next to each other
-  const sortedArr = _.sortBy(arr);
-  // remove duplicate keys
-  const arrayUniqKeys = getUniqKeys(sortedArr);
+  const keys1 = _.keys(obj1);
+  const keys2 = _.keys(obj2);
+  const arrayUniqKeys = _.sortBy(_.union(keys1, keys2));
   // building diff as array with next data {key, value, event},
-  // event(deleted || added || unchanged || updated)
-  const diff = arrayUniqKeys.reduce((acc, [key, value]) => {
+  // event can accept state:(deleted || added || unchanged || updated)
+  const diff = arrayUniqKeys.reduce((acc, key) => {
     if (_.has(obj1, key) && _.has(obj2, key)) {
       if (isObject(obj1[key]) && isObject(obj2[key])) {
         return [...acc, {
@@ -38,7 +21,7 @@ const builder = (obj1, obj2) => {
       if (obj1[key] === obj2[key]) {
         return [...acc, {
           name: key,
-          value,
+          value: obj1[key],
           event: 'unchanged',
         }];
       }

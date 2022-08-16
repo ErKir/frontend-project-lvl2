@@ -2,7 +2,7 @@ import process from 'process';
 import { resolve } from 'path';
 import fs from 'node:fs';
 import _ from 'lodash';
-import parser from './parsers.js';
+import parse from './parsers.js';
 import diffToString from './formatters/index.js';
 import buildDiff from './builderTree.js';
 
@@ -13,20 +13,17 @@ const parseFileAsString = (filePath) => fs.readFileSync(getFixturePath(filePath)
 // get extension for parser
 const getExtension = (filePath) => _.last(filePath.split('.')).toLowerCase();
 
-const getDiff = (filePath1, filePath2, outputFormat = 'stylish') => {
-  // prepare file1
-  const file1AsString = parseFileAsString(filePath1);
+const getData = (filepath) => parse(parseFileAsString(filepath), getExtension(filepath));
 
-  // prepare file2
-  const file2AsString = parseFileAsString(filePath2);
+const genDiff = (filePath1, filePath2, outputFormat = 'stylish') => {
   // parse files as objects
-  const extension1 = getExtension(filePath1);
-  const extension2 = getExtension(filePath2);
-  const file1AsObject = parser(file1AsString, extension1);
-  const file2AsObject = parser(file2AsString, extension2);
+  const data1 = getData(filePath1);
+  const data2 = getData(filePath2);
+
   // constructing a string that depends on the data format (json or yaml)
-  const diff = buildDiff(file1AsObject, file2AsObject);
+  const diff = buildDiff(data1, data2);
+
   return diffToString(diff, outputFormat);
 };
 
-export default getDiff;
+export default genDiff;
