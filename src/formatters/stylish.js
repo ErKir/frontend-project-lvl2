@@ -1,57 +1,50 @@
 import _ from 'lodash';
 
-const getEventAsString = (event) => {
-  switch (event) {
-    case 'added':
-      return '+ ';
-    case 'removed':
-      return '- ';
-    case 'unchanged':
-      return '  ';
-    default:
-      throw new Error(`Unexpected "obj.event" = ${event}`);
+const getIndents = (level) => {
+  const count = 2;
+  const replacer = '  ';
+  const indentSize = level * count;
+  const currentIndent = replacer.repeat(indentSize - 1);
+  const bracketIndent = replacer.repeat(indentSize - count);
+  return {
+    currentIndent,
+    bracketIndent,
+  };
+};
+
+const stringify = (value, level) => {
+  if (!_.isObject(value)) {
+    return `${value}`;
   }
+  const indents = getIndents(level);
+  const lines = Object
+    .entries(value)
+    .map(([key, val]) => `${indents.currentIndent}  ${key}: ${stringify(val, level + 1)}`);
+  return ['{', ...lines, `${indents.bracketIndent}}`].join('\n');
 };
 
-const stringify = (value, replacer = ' ', spacesCount = 2, level = 1) => {
-  const iter = (currentValue, depth) => {
-    if (!_.isObject(currentValue)) {
-      return `${currentValue}`;
-    }
-    const indentSize = depth * spacesCount;
-    const currentIndent = replacer.repeat(indentSize);
-    const bracketIndent = replacer.repeat(indentSize - (spacesCount * 2));
-    const lines = Object
-      .entries(currentValue)
-      .map(([key, val]) => `${currentIndent}${key}: ${iter(val, depth + 2)}`);
-    return ['{', ...lines, `${bracketIndent}}`].join('\n');
-  };
-  return iter(value, level);
-};
+const stylish = (currentItem, depth = 1) => {
+  const indents = getIndents(depth);
 
-const stylish = (item, replacer = ' ', spacesCount = 2) => {
-  const iter = (currentItem, depth) => {
-    if (!_.isObject(currentItem)) {
-      return `${currentItem}`;
+  const lines = currentItem.map((obj) => {
+    const { name, value, type } = obj;
+    switch (type) {
+      case 'added':
+        return `${indents.currentIndent}+ ${name}: ${stringify(value, depth + 1)}`;
+      case 'removed':
+        return `${indents.currentIndent}- ${name}: ${stringify(value, depth + 1)}`;
+      case 'updated':
+        return `${indents.currentIndent}- ${name}: ${stringify(obj.value1, depth + 1)}\n${indents.currentIndent}+ ${name}: ${stringify(obj.value2, depth + 1)}`;
+      case 'unchanged':
+        return `${indents.currentIndent}  ${name}: ${stringify(value, depth + 1)}`;
+      case 'nested':
+        return `${indents.currentIndent}  ${name}: ${stylish(value, depth + 1)}`;
+      default:
+        throw new Error(`Unexpected "obj.event" = ${type}`);
     }
+  });
 
-    const indentSize = depth * spacesCount;
-    const currentIndent = replacer.repeat(indentSize);
-    const bracketIndent = replacer.repeat(indentSize - spacesCount);
-
-    if (!Array.isArray(currentItem)) {
-      return stringify(currentItem, replacer, spacesCount, depth + 1);
-    }
-    const lines = currentItem.map((obj) => {
-      if (obj.event === 'updated') {
-        return `${currentIndent}${getEventAsString('removed')}${obj.name}: ${iter(obj.value1, depth + 2)}\n${currentIndent}${getEventAsString('added')}${obj.name}: ${iter(obj.value2, depth + 2)}`;
-      }
-      const { name, value, event } = obj;
-      return `${currentIndent}${getEventAsString(event)}${name}: ${iter(value, depth + 2)}`;
-    });
-    return ['{', ...lines, `${bracketIndent}}`].join('\n');
-  };
-  return iter(item, 1);
+  return ['{', ...lines, `${indents.bracketIndent}}`].join('\n');
 };
 
 export default stylish;
