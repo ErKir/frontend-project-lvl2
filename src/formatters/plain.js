@@ -16,22 +16,22 @@ const stringify = (value) => {
 const plain = (item) => {
   const iter = (currentItem, propNames) => {
     const lines = currentItem.map((obj) => {
-      const { name, value, event } = obj;
+      const { name, value, type } = obj;
       const currentPropName = [...propNames, name];
-      if (Array.isArray(value)) {
-        return iter(value, currentPropName);
-      }
-      switch (obj.event) {
+
+      switch (type) {
         case 'added':
-          return `Property '${currentPropName.join('.')}' was ${event} with value: ${stringify(value)}`;
+          return `Property '${currentPropName.join('.')}' was ${type} with value: ${stringify(value)}`;
         case 'removed':
-          return `Property '${currentPropName.join('.')}' was ${event}`;
+          return `Property '${currentPropName.join('.')}' was ${type}`;
         case 'updated':
-          return `Property '${currentPropName.join('.')}' was ${event}. From ${stringify(obj.value1)} to ${stringify(obj.value2)}`;
+          return `Property '${currentPropName.join('.')}' was ${type}. From ${stringify(obj.value1)} to ${stringify(obj.value2)}`;
+        case 'nested':
+          return iter(value, currentPropName);
         case 'unchanged':
           return '';
         default:
-          throw new Error(`Unexpected "obj.event" = ${event}`);
+          throw new Error(`Unexpected "obj.event" = ${type}`);
       }
     });
 
