@@ -9,7 +9,7 @@ const parse = (file, extension) => {
     case 'yaml':
       return yaml.load(file);
     default:
-      throw Error('Sorry, extension of file must be ".json" or ".yml"/".yaml"');
+      throw Error('Wrong extension!');
   }
 };
 
