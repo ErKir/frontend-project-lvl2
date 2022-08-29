@@ -7,26 +7,18 @@ const builder = (obj1, obj2) => {
   // building diff as array with next data {key, value, type},
   // type can accept state:(deleted || added || unchanged || updated || nested)
   const diff = arrayUniqKeys.map((key) => {
-    if (_.has(obj1, key) && _.has(obj2, key)) {
-      if (_.isPlainObject(obj1[key]) && _.isPlainObject(obj2[key])) {
-        return {
-          name: key,
-          value: builder(obj1[key], obj2[key]),
-          type: 'nested',
-        };
-      }
-      if (_.isEqual(obj1[key], obj2[key])) {
-        return {
-          name: key,
-          value: obj1[key],
-          type: 'unchanged',
-        };
-      }
+    if (_.isPlainObject(obj1[key]) && _.isPlainObject(obj2[key])) {
       return {
         name: key,
-        value1: obj1[key],
-        value2: obj2[key],
-        type: 'updated',
+        value: builder(obj1[key], obj2[key]),
+        type: 'nested',
+      };
+    }
+    if (_.isEqual(obj1[key], obj2[key])) {
+      return {
+        name: key,
+        value: obj1[key],
+        type: 'unchanged',
       };
     }
     if (!_.has(obj2, key)) {
@@ -36,10 +28,18 @@ const builder = (obj1, obj2) => {
         type: 'removed',
       };
     }
+    if (!_.has(obj1, key)) {
+      return {
+        name: key,
+        value: obj2[key],
+        type: 'added',
+      };
+    }
     return {
       name: key,
-      value: obj2[key],
-      type: 'added',
+      value1: obj1[key],
+      value2: obj2[key],
+      type: 'updated',
     };
   });
   return diff;
